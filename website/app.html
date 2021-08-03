@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Examen</title>
+	<link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+	<style>
+		.radio-answer+* {
+			display: none;
+		}
+		.radio-answer:checked+* {
+			display: inline-block !important;
+		}
+	</style>
+</head>
+<body class = "h-full bg-gray-200 p-5">
+	<div id="app" class = "">
+
+		<h1 class = "text-4xl mb-2">Examen de prueba</h1>
+		<p class = "text-2xl my-2">Selecciona la canidad de preguntas que deseas cargar. Las preguntas serán aleatorias.</p>
+		<div>
+			<input type="number" v-model = "numberOfQuestions"  @keyup.enter  = "loadQuestions" min = "1" max = "100" class = "p-2 mr-2"/> 
+			<button @click = "loadQuestions" class = "p-2 bg-gray-800 hover:bg-gray-700 text-white">¡Cargar Preguntas!</button>
+		</div>
+
+		<div v-for = "question in questions" class="question bg-gray-100  p-5 m-5">
+			<p>{{question.id}}.- {{question.question}}</p>
+			<ul>
+				<li v-for = "answer in question.answers">
+					<input class = "radio-answer" type="radio" :id = "'answer-'+question.id+'-'+answer.id" :name = "'question-'+question.id">
+					<i v-if = "answer.is_correct" class = "fas fa-check text-green-400"></i>
+					<i v-if = "!answer.is_correct" class = "fas fa-times text-red-400"></i>
+					<label :for="'answer-'+question.id+'-'+answer.id">{{answer.id}}) {{answer.answer}}</label>
+				</li>
+			</ul>
+		</div>
+
+		<div v-if = "questions.length > 0">
+			<input type="number" v-model = "numberOfQuestions" @keyup.enter  = "loadQuestions" min = "1" max = "100" class = "p-2 mr-2"/> 
+			<button @click = "loadQuestions" class = "p-2 bg-gray-800 hover:bg-gray-700 text-white">¡Cargar Preguntas!</button>
+		</div>
+		
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+	<script src="src/quiz.json"></script>
+	<script src="src/app.js"></script>
+</body>
+</html>
