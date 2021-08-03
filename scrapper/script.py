@@ -19,6 +19,7 @@ def answers():
 	text = re .sub("\n.\n", "", text) #remove Página
 	text = re .sub("\n(?! )", "", text) #remove Página
 	text = re .sub("\n ", "\n", text) #remove Página
+	
 	write('files/processed-answers.txt', text)
 	
 	text = re .sub("([0-9]+)\.- ([ABCD]+)", r'"\1":"\2",', text) #remove Página
@@ -39,7 +40,11 @@ def clear(answers):
 	text = re .sub("\n(?! )", "", text) #remove Página
 	text = re .sub("\n ", "\n", text) #remove Página
 	text = text[1:-1]
-	text = re .sub("([abcd]+)\)", r"\n\1)", text) #remove Página
+	text = re .sub("([abcd]+)\) ", r"\n\1)", text) #remove Página
+	text = re .sub("(d\).*) ([0-9]+\.-.*\na\))", r"\1\n\2", text) #remove Página
+	text = re .sub("(opción )\n([abcd]\))", r"\1\2", text) #remove Página
+	text = re .sub("(opciones )\n(a\))", r"\1\2", text) #remove Página
+	
 	write('files/processed-quiz.txt', text)
 	
 	lines = text.splitlines()
@@ -55,6 +60,8 @@ def clear(answers):
 			tmp_category = json.loads(tmp_category)
 		if bool(re.match("[0-9]+\.-.*", line)):
 			if tmp_question is not None:
+				if len(tmp_question['answers']) != 4:
+					print(tmp_question['id'] + "->" + str(len(tmp_question['answers'])))
 				questions.append(tmp_question)
 			tmp_question = re.sub("([0-9]+)\.-(.*)", r'{"id": "\1", "question": "\2", "answers": []}', line)
 			tmp_question = json.loads(tmp_question)
@@ -62,6 +69,7 @@ def clear(answers):
 		if bool(re.match("[abcd]+\).*", line)):
 			is_correct = 'false'
 			letter = re.sub("([abcd]+)\)(.*)", r'\1', line)
+			#print(tmp_question["id"])
 			if answers[tmp_question["id"]].lower() == letter:
 				is_correct = 'true'
 			tmp_answer = re.sub("([abcd]+)\)(.*)", r'{"id": "\1", "answer": "\2", "is_correct": '+is_correct+'}', line)

@@ -3,7 +3,13 @@ new Vue({
 	data: {
 		numberOfQuestions: 20,
 		quiz: quiz,
-		questions: []
+		mode: 'LIST',
+		questions: [],
+		page: 1,
+		pageSize: 100
+	},
+	mounted() {
+		this.changeMode()
 	},
 	methods: {
 		loadQuestions() {
@@ -27,6 +33,20 @@ new Vue({
 				}
 			}
 			
+		},
+		changeMode() {
+			this.questions = []
+			if(this.mode === 'LIST') {
+				this.loadList(1)
+			}
+		},
+		loadList(page) {
+			this.questions = []
+			this.page = page
+			for (let index = (this.page - 1) * this.pageSize; index < this.page * this.pageSize && index < this.quiz.length; index++) {
+				this.questions.push(this.quiz[index])
+			}
+
 		}
 	}
 });

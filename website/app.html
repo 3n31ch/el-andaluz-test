@@ -19,9 +19,17 @@
 <body class = "h-full bg-gray-200 p-5">
 	<div id="app" class = "">
 
-		<h1 class = "text-4xl mb-2">Examen de prueba</h1>
-		<p class = "text-2xl my-2">Selecciona la canidad de preguntas que deseas cargar. Las preguntas serán aleatorias.</p>
-		<div>
+		<a target="_blank" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" class = "bg-red-500 text-white flex items-center justify-center rounded-full fixed" style = "top:10px; right:10px; height: 3rem;width: 3rem;"><i class="fas fa-exclamation-triangle"></i></a>
+		<h1 class = "text-4xl mb-2">
+			Examen de prueba
+			<select id = "mode" v-model = "mode" class = "p-2 text-center" @change="changeMode">
+				<option value="LIST" selected>Lista 💩</option>
+				<option value="RANDOM">Aleatoreo 😎</option>
+			</select>
+		</h1>
+		
+		<p v-if = "mode === 'RANDOM'" class = "text-2xl my-2">Selecciona la cantidad de preguntas que deseas cargar. Las preguntas serán aleatorias.</p>
+		<div v-if = "mode === 'RANDOM'">
 			<input type="number" v-model = "numberOfQuestions"  @keyup.enter  = "loadQuestions" min = "1" max = "100" class = "p-2 mr-2"/> 
 			<button @click = "loadQuestions" class = "p-2 bg-gray-800 hover:bg-gray-700 text-white">¡Cargar Preguntas!</button>
 		</div>
@@ -38,10 +46,18 @@
 			</ul>
 		</div>
 
-		<div v-if = "questions.length > 0">
+		<div v-if = "mode === 'RANDOM' && questions.length > 0">
 			<input type="number" v-model = "numberOfQuestions" @keyup.enter  = "loadQuestions" min = "1" max = "100" class = "p-2 mr-2"/> 
 			<button @click = "loadQuestions" class = "p-2 bg-gray-800 hover:bg-gray-700 text-white">¡Cargar Preguntas!</button>
 		</div>
+
+		<ul v-if = "mode === 'LIST'">
+			<li class = "inline-block"> <button @click = "loadList(page-1)" class = "p-2 hover:bg-gray-700 text-white" :class = "(page == 1)? 'bg-gray-500' : 'bg-gray-800'" :disabled = "page == 1">Anterior</button></li>
+			<li class = "inline-block" v-for = "i in (Math.ceil(quiz.length/pageSize) )">
+				<button @click = "loadList(i)" class = "p-2 hover:bg-gray-700 text-white" :class = "(page == (i))? 'bg-gray-700' : 'bg-gray-800' " style = "min-width: 3rem;">{{i}}</button>
+			</li>
+			<li class = "inline-block"><button @click = "loadList(page+1)" class = "p-2  hover:bg-gray-700 text-white" :class = "page == (Math.ceil(quiz.length/pageSize) )? 'bg-gray-500' : 'bg-gray-800'" :disabled = "page == (Math.ceil(quiz.length/pageSize) )">Siguiente</button></li>
+		</ul>
 		
 	</div>
 	<script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
