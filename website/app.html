@@ -30,7 +30,7 @@
 			<p>{{question.id}}.- {{question.question}}</p>
 			<ul>
 				<li v-for = "answer in question.answers">
-					<input class = "radio-answer" type="radio" :id = "'answer-'+question.id+'-'+answer.id" :name = "'question-'+question.id">
+					<input class = "radio-answer" type="radio" :id = "'answer-'+question.id+'-'+answer.id" :name = "'question-'+question.id" autocomplete="off">
 					<i v-if = "answer.is_correct" class = "fas fa-check text-green-400"></i>
 					<i v-if = "!answer.is_correct" class = "fas fa-times text-red-400"></i>
 					<label :for="'answer-'+question.id+'-'+answer.id">{{answer.id}}) {{answer.answer}}</label>
