@@ -7,6 +7,11 @@ new Vue({
 	},
 	methods: {
 		loadQuestions() {
+			const checkboxs  = document.querySelectorAll('input[type="radio"]')
+			console.log(checkboxs)
+			checkboxs.forEach(checkbox => {
+				checkbox.checked = false
+			})
 			this.questions = []
 			if(this.numberOfQuestions > 100) this.numberOfQuestions = 100
 			if(this.numberOfQuestions < 1) this.numberOfQuestions = 1
@@ -21,7 +26,7 @@ new Vue({
 					}
 				}
 			}
-			console.log(randomIds)
+			
 		}
 	}
 });
