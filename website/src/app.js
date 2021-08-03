@@ -14,7 +14,6 @@ new Vue({
 	methods: {
 		loadQuestions() {
 			const checkboxs  = document.querySelectorAll('input[type="radio"]')
-			console.log(checkboxs)
 			checkboxs.forEach(checkbox => {
 				checkbox.checked = false
 			})
@@ -41,6 +40,10 @@ new Vue({
 			}
 		},
 		loadList(page) {
+			const checkboxs  = document.querySelectorAll('input[type="radio"]')
+			checkboxs.forEach(checkbox => {
+				checkbox.checked = false
+			})
 			this.questions = []
 			this.page = page
 			for (let index = (this.page - 1) * this.pageSize; index < this.page * this.pageSize && index < this.quiz.length; index++) {
